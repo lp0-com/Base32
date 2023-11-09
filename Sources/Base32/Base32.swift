@@ -166,6 +166,7 @@ private func base32encode(_ data: UnsafeRawPointer, _ length: Int, _ table: [Int
     
     let resultBufferSize = Int(ceil(Double(length) / 5)) * 8 + 1    // need null termination
     let resultBuffer = UnsafeMutablePointer<Int8>.allocate(capacity: resultBufferSize)
+    resultBuffer.initialize(repeating: 0, count: resultBufferSize)
     var encoded = resultBuffer
     
     // encode regular blocks
@@ -208,6 +209,8 @@ private func base32encode(_ data: UnsafeRawPointer, _ length: Int, _ table: [Int
     default: break
     }
 
+    // Calculate the position where the null terminator should be placed
+    let encodedLength = (encoded - resultBuffer) + (length > 0 ? 8 : 0)
     // padding
     if padding {
         let pad = Int8(UnicodeScalar("=").value)
@@ -232,13 +235,10 @@ private func base32encode(_ data: UnsafeRawPointer, _ length: Int, _ table: [Int
             encoded[8] = 0
             break
         }
-    } else {
-        if length == 0 {
-            encoded[0] = 0
-        } else {
-            encoded[8] = 0
-        }
     }
+    
+    // Set the null terminator at the correct position
+    resultBuffer[encodedLength] = 0
     
     // return
     if let base32Encoded = String(validatingUTF8: resultBuffer) {
