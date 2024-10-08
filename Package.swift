@@ -10,7 +10,13 @@ var package = Package(
         .target(name: "Base32"),
         .testTarget(name: "Base32Tests", dependencies: ["Base32"])
     ],
-    swiftLanguageVersions: [.v4, .v4_2, .version("5")]
+    platforms: [
+    .iOS(.v9),
+    .macOS(.v10_9),
+    .tvOS(.v9),
+    .watchOS(.v2)
+]
+    swiftLanguageVersions: [.v4, .v4_2, .version("5"), .version("6")]
 )
 
 #if os(macOS)
