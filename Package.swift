@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:6
 import PackageDescription
 
 var package = Package(
@@ -16,7 +16,7 @@ var package = Package(
     .tvOS(.v9),
     .watchOS(.v2)
 ]
-    swiftLanguageVersions: [.v4, .v4_2, .version("5"), .version("6")]
+    swiftLanguageVersions: [ .version("6")]
 )
 
 #if os(macOS)
